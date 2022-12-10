@@ -27,6 +27,10 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
+UserSchema.pre("findOne", function () {
+  console.log("Called `findOne()`");
+});
+
 UserSchema.methods.isValidPassword = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);

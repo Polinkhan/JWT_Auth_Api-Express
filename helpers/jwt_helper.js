@@ -12,7 +12,7 @@ module.exports = {
       };
       const secret = process.env.ACCESS_TOKEN_SECRET;
       const options = {
-        expiresIn: "1h",
+        expiresIn: "30s",
         issuer: "abusayedpolin.com",
         audience: userId,
       };
@@ -48,11 +48,12 @@ module.exports = {
   verifyAccessToken: (req, res, next) => {
     if (!req.headers["authorization"]) return next(createError.Unauthorized());
     const authHeader = req.headers["authorization"];
-    const bearerToken = authHeader.split(" ");
-    const token = bearerToken[1];
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+    jwt.verify(authHeader, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
       if (err) {
-        const message = err.name === "JsonWebTokenError" ? "" : err.message;
+        console.log(err.message);
+        // const message = err.name === "JsonWebTokenError" ? "" : err.message;
+        const message =
+          err.name === "JsonWebTokenError" ? err.message : err.message;
         return next(createError.Unauthorized(message));
       }
       req.payload = payload;

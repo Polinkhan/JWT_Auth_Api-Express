@@ -43,8 +43,8 @@ router.post("/login", async (req, res, next) => {
 
     res.send({ accessToken, refreshToken });
   } catch (err) {
-    if (err.isJoi)
-      return next(createError.BadRequest("Invalid Username/Password"));
+    if (err.isJoi) return next(err);
+    // return next(createError.BadRequest("Invalid Username/Password"));
     next(err);
   }
 });
@@ -52,6 +52,8 @@ router.post("/login", async (req, res, next) => {
 router.post("/refresh-token", async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
+
+    console.log(req.body);
     if (!refreshToken) throw createError.BadRequest();
     const userId = await verifyRefreshToken(refreshToken);
 

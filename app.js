@@ -8,6 +8,7 @@ require("./helpers/init__mongoDB");
 //Scafolding
 const AuthRoute = require("./Routes/Auth.route");
 const { verifyAccessToken } = require("./helpers/jwt_helper");
+const User = require("./Moduls/User.model");
 
 const app = express();
 app.use(morgan("dev"));
@@ -15,7 +16,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", verifyAccessToken, async (req, res, next) => {
-  res.send("hello");
+  // const user = await User.findById(req.payload.aud);
+  // console.log(user);
+  res.send({ credential: true });
 });
 
 app.use("/auth", AuthRoute);
